@@ -1,0 +1,25 @@
+version: '3'
+services:
+  nginx:
+    image: jwilder/nginx-proxy:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./ca:/etc/nginx/certs
+    links:
+      - tomcat
+  tomcat:
+    deploy:
+      replicas: 1
+    environment:
+      VIRTUAL_HOST: localhost
+      VIRTUAL_PORT: 8080
+
+    #volumes:
+    #   - ./target/cis5530w3h1-1.0-SNAPSHOT.war:/usr/local/tomcat/webapps/cis5530w3h1.war
+    build: ./
+
+      
+    
